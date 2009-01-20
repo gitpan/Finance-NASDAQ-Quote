@@ -5,7 +5,7 @@ use strict;
 
 use HTML::TreeBuilder;
 use LWP::Simple qw($ua get);
-$ua->timeout(10);
+$ua->timeout(15);
 
 require Exporter;
 our @ISA = qw(Exporter);
@@ -17,11 +17,11 @@ Finance::NASDAQ::Quote - Fetch real time stock quotes from nasdaq.com
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -55,6 +55,8 @@ sub getquote {
     my $url = "http://www.nasdaq.com/aspx/nasdaqlastsale.aspx?symbol=$symbol&selected=$symbol";
     my @ids = qw/_LastSale _NetChange _PctChange _Volume/;
     my $content = get $url;
+    # TODO: something more intelligent
+    return unless defined $content;
 
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
@@ -66,9 +68,13 @@ sub getquote {
     if ($img) {
         my ($color) = ($img->attr('src') =~ /(\w+)ArrowSmall/);
         $quote{sgn} = $color eq 'green' ? '+' : '-';
+    } else {
+        $quote{sgn} = undef;
     }
 
-    return () if grep {not defined} values %quote;
+    $tree = $tree->delete();
+
+    return if grep {not defined} values %quote;
     return wantarray ? %quote : _as_text($symbol, %quote);
 }
 
@@ -94,8 +100,6 @@ sub _findspan {
 # format %quote as a string
 sub _as_text {
     my ($symbol,%quote) = @_;
-    return undef if grep {not defined} values %quote;
-
     return sprintf ("%s: \$%2.2f, %s%s (%s%s), vol %s", $symbol,
                             @quote{qw/prc sgn net sgn pct vol/});
 }

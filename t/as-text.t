@@ -2,17 +2,18 @@
 use Test::More; 
 use Finance::NASDAQ::Quote;
 
-my @symbols = ('FNORD', 'BROKE');
+my @symbols = ('FNORD'); #, 'BROKE');
 my @quotes  = ({ prc => '1.337',
                  sgn => '+',
                  net => '3.14',
                  pct => '2.71%',
-                 vol => '31,337' },
+                 vol => '31,337' },);
 
-               { prc => '1.23',
-                 sgn => undef, # !
-                 net => '123', });
-my @results = ( 'FNORD: $1.34, +3.14 (+2.71%), vol 31,337', undef );
+# _as_text doesn't do the checking, quote does.
+#               { prc => '1.23',
+#                 sgn => undef, # !
+#                 net => '123', });
+my @results = ( 'FNORD: $1.34, +3.14 (+2.71%), vol 31,337'); # , undef );
 
 plan tests => scalar @symbols;
 

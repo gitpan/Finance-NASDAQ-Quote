@@ -1,4 +1,8 @@
 Revision history for Finance-NASDAQ-Quote
 
-0.01    2008-12-31/18:55:00 EST
+0.02    2009-01-10 05:10:00 EST
+        undef 'sgn' if the image can't be found
+        delete the HTML::TreeBuilder tree (d'oh)
+
+0.01    2008-12-31 18:55:00 EST
         First version, released to a mostly-partying world.
