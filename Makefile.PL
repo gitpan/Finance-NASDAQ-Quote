@@ -15,6 +15,7 @@ WriteMakefile(
         'LWP::Simple' => 0,
         'HTML::TreeBuilder' => 0,
         'Test::More' => 0,
+        'URI' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Finance-NASDAQ-Quote-*' },

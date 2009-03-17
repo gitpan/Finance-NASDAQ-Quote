@@ -1,5 +1,8 @@
 Revision history for Finance-NASDAQ-Quote
 
+0.03    2009-03-16 22:08:00 EDT
+        Added URI.pm to PREREQ_PM
+
 0.02    2009-01-10 05:10:00 EST
         undef 'sgn' if the image can't be found
         delete the HTML::TreeBuilder tree (d'oh)
