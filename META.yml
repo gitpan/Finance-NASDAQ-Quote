@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Finance-NASDAQ-Quote
-version:             0.03
+version:             0.05
 abstract:            Fetch real time stock quotes from nasdaq.com
 license:             perl
 author:              

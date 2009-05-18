@@ -1,5 +1,11 @@
 Revision history for Finance-NASDAQ-Quote
 
+0.05    2009-05-18 18:00:00 EDT
+        NASDAQ changed the form of their page title.
+
+0.04    2009-03-24 10:29:00 EDT
+        Include company name in getquote return.
+
 0.03    2009-03-16 22:08:00 EDT
         Added URI.pm to PREREQ_PM
 

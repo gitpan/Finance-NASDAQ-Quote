@@ -17,11 +17,11 @@ Finance::NASDAQ::Quote - Fetch real time stock quotes from nasdaq.com
 
 =head1 VERSION
 
-Version 0.03
+Version 0.05
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 
 =head1 SYNOPSIS
@@ -55,8 +55,7 @@ sub getquote {
     my $url = "http://www.nasdaq.com/aspx/nasdaqlastsale.aspx?symbol=$symbol&selected=$symbol";
     my @ids = qw/_LastSale _NetChange _PctChange _Volume/;
     my $content = get $url;
-    # TODO: something more intelligent
-    return unless defined $content;
+    warn "NASDAQ is down" and return unless defined $content;
 
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
@@ -69,7 +68,15 @@ sub getquote {
         my ($color) = ($img->attr('src') =~ /(\w+)ArrowSmall/);
         $quote{sgn} = $color eq 'green' ? '+' : '-';
     } else {
+        warn "Failed to locate updownimage";
         $quote{sgn} = undef;
+    }
+
+    ($quote{nam}) = ($tree->find('title')->as_text() =~ /^([^(]+) \(\S+\)/);
+    if (defined $quote{nam}) {
+        $quote{nam} =~ s/ +$//g;
+    } else {
+        warn "Could not parse title";
     }
 
     $tree = $tree->delete();
@@ -94,14 +101,19 @@ sub _id {
 sub _findspan {
     my ($tree,$id) = @_;
     my $elem = $tree->look_down('_tag', 'span', _id($id));
-    return defined $elem ? $elem->as_text : undef;
+    if (defined $elem) {
+        return $elem->as_text;
+    } else {
+        warn "Could not find span $id";
+        return undef;
+    }
 }
 
 # format %quote as a string
 sub _as_text {
     my ($symbol,%quote) = @_;
-    return sprintf ("%s: \$%2.2f, %s%s (%s%s), vol %s", $symbol,
-                            @quote{qw/prc sgn net sgn pct vol/});
+    return sprintf ("%s (%s): \$%g, %s%s (%s%s), vol %s", $quote{nam},
+                            $symbol, @quote{qw/prc sgn net sgn pct vol/});
 }
 
 =head1 AUTHOR
