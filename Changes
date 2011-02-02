@@ -1,5 +1,8 @@
 Revision history for Finance-NASDAQ-Quote
 
+0.06    2010-09-21 15:54:00 EDT
+        Allow user-specified UA
+
 0.05    2009-05-18 18:00:00 EDT
         NASDAQ changed the form of their page title.
 

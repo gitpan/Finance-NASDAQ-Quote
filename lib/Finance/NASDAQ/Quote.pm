@@ -17,11 +17,11 @@ Finance::NASDAQ::Quote - Fetch real time stock quotes from nasdaq.com
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 =head1 SYNOPSIS
@@ -51,10 +51,16 @@ consumption, or undef on error.
 =cut
 
 sub getquote {
-    my ($symbol) = @_;
+    my ($symbol,$ua) = @_;
     my $url = "http://www.nasdaq.com/aspx/nasdaqlastsale.aspx?symbol=$symbol&selected=$symbol";
     my @ids = qw/_LastSale _NetChange _PctChange _Volume/;
-    my $content = get $url;
+    my $content;
+    if (defined $ua) {
+        my $resp = $ua->get($url);
+        $content = $resp->content() if $resp->is_success();
+    } else {
+        $content = get $url;
+    }
     warn "NASDAQ is down" and return unless defined $content;
 
     my $tree = HTML::TreeBuilder->new;
