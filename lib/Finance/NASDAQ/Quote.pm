@@ -17,11 +17,11 @@ Finance::NASDAQ::Quote - Fetch real time stock quotes from nasdaq.com
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 
 =head1 SYNOPSIS
@@ -77,6 +77,7 @@ sub getquote {
         warn "Failed to locate updownimage";
         $quote{sgn} = undef;
     }
+    if ($quote{net} eq 'unch') { $quote{net} = 0 };
 
     ($quote{nam}) = ($tree->find('title')->as_text() =~ /^([^(]+) \(\S+\)/);
     if (defined $quote{nam}) {

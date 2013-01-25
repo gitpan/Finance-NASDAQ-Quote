@@ -1,5 +1,9 @@
 Revision history for Finance-NASDAQ-Quote
 
+0.07    2013-01-25 13:26:00 EDT
+        Handle 'unch' net change correctly
+        (Thanks JonathanD)
+
 0.06    2010-09-21 15:54:00 EDT
         Allow user-specified UA
 
